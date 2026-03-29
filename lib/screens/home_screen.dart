@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/screens/book_parcel_screen.dart'; 
+import 'package:flutter_application/screens/track_parcel_screen.dart'; 
+import 'package:flutter_application/screens/shop_screen.dart'; 
+import 'package:flutter_application/screens/history_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,6 +15,7 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Хедер
             Container(
               padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
               decoration: const BoxDecoration(
@@ -45,6 +50,7 @@ class HomeScreen extends StatelessWidget {
               ]),
             ),
 
+            // Головна сітка кнопок (Book, Track і т.д.)
             Padding(
               padding: const EdgeInsets.all(15),
               child: GridView.count(
@@ -55,28 +61,31 @@ class HomeScreen extends StatelessWidget {
                 crossAxisSpacing: 10,
                 childAspectRatio: 2.3,
                 children: [
-                  _buildButton("Book", "Send package", Colors.deepOrangeAccent, Icons.all_inbox, true),
-                  _buildButton("Track", "Check location", Colors.pinkAccent, Icons.location_on, true),
-                  _buildButton("Shop", "Buy local", Colors.blueAccent, Icons.shopping_bag, true),
-                  _buildButton("History", "Past orders", Colors.green, Icons.history, true),
+                  _buildButton(context, "Book", "Send package", Colors.deepOrangeAccent, Icons.all_inbox, true, const BookParcelScreen()),
+                  _buildButton(context, "Track", "Check location", Colors.pinkAccent, Icons.location_on, true, const TrackParcelScreen()),
+                  _buildButton(context, "Shop", "Buy local", Colors.blueAccent, Icons.shopping_bag, true, const ShopScreen()),
+                  _buildButton(context, "History", "Past orders", Colors.green, Icons.history, true, const HistoryScreen()),
                 ],
               ),
             ),
 
             const Padding(
-              padding: EdgeInsets.fromLTRB(100, 20, 20, 10),
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 10), // Виправив Padding, щоб текст не був посередині
               child: Text("Service For Farmers", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ),
+
+            // Кнопки фермерів (додав context та null)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(children: [
-                Expanded(child: _buildButton("Sell", "", Colors.green, Icons.storefront, false)),
+                Expanded(child: _buildButton(context, "Sell", "", Colors.green, Icons.storefront, false, null)),
                 const SizedBox(width: 8),
-                Expanded(child: _buildButton("Crop AI", "", Colors.lightGreen, Icons.psychology, false)),
+                Expanded(child: _buildButton(context, "Crop AI", "", Colors.lightGreen, Icons.psychology, false, null)),
                 const SizedBox(width: 8),
-                Expanded(child: _buildButton("Health", "", Colors.teal, Icons.medical_services, false)),
+                Expanded(child: _buildButton(context, "Health", "", Colors.teal, Icons.medical_services, false, null)),
               ]),
             ),
+
             const Padding(
               padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
               child: Text("Connectivity Support", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -84,11 +93,11 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(children: [
-                Expanded(child: _buildButton("Offline", "", Colors.orange, Icons.wifi_off, false)),
+                Expanded(child: _buildButton(context, "Offline", "", Colors.orange, Icons.wifi_off, false, null)),
                 const SizedBox(width: 8),
-                Expanded(child: _buildButton("Data", "", Colors.blueGrey, Icons.data_usage, false)),
+                Expanded(child: _buildButton(context, "Data", "", Colors.blueGrey, Icons.data_usage, false, null)),
                 const SizedBox(width: 8),
-                Expanded(child: _buildButton("Voice", "", Colors.blue, Icons.mic, false)),
+                Expanded(child: _buildButton(context, "Voice", "", Colors.blue, Icons.mic, false, null)),
               ]),
             ),
             Padding(
@@ -109,29 +118,39 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-  Widget _buildButton(String title, String sub, Color color, IconData icon, bool isWide) {
-    return Container(
-      height: isWide ? null : 90,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [BoxShadow(color: color.withOpacity(0.2), blurRadius: 8, offset: const Offset(0, 4))],
-      ),
-      child: isWide 
-        ? Row(children: [
-            const SizedBox(width: 12),
-            Icon(icon, color: Colors.white, size: 26),
-            const SizedBox(width: 10),
-            Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
-              if (sub.isNotEmpty) Text(sub, style: const TextStyle(color: Colors.white70, fontSize: 16)),
+  Widget _buildButton(BuildContext context, String title, String sub, Color color, IconData icon, bool isWide, Widget? targetScreen) {
+    return GestureDetector(
+      onTap: () {
+        if (targetScreen != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => targetScreen),
+          );
+        }
+      },
+      child: Container(
+        height: isWide ? null : 90,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [BoxShadow(color: color.withOpacity(0.2), blurRadius: 8, offset: const Offset(0, 4))],
+        ),
+        child: isWide 
+          ? Row(children: [
+              const SizedBox(width: 12),
+              Icon(icon, color: Colors.white, size: 26),
+              const SizedBox(width: 10),
+              Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
+                if (sub.isNotEmpty) Text(sub, style: const TextStyle(color: Colors.white70, fontSize: 16)),
+              ])
             ])
-          ])
-        : Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Icon(icon, color: Colors.white, size: 30),
-            const SizedBox(height: 8),
-            Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
-          ]),
+          : Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(icon, color: Colors.white, size: 30),
+              const SizedBox(height: 8),
+              Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
+            ]),
+      ),
     );
   }
 }
