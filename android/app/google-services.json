@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "956474744713",
+    "project_id": "gaonexpress-1f24e",
+    "storage_bucket": "gaonexpress-1f24e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956474744713:android:5d24d5b817f589674dcb58",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjv8H_BxcIdAfqr-4WwNVNDt7sNR2EPu4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
