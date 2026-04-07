@@ -49,8 +49,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ]),
             ),
-
-            // Головна сітка кнопок (Book, Track і т.д.)
             Padding(
               padding: const EdgeInsets.all(15),
               child: GridView.count(
